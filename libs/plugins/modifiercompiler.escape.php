@@ -39,7 +39,7 @@ function smarty_modifiercompiler_escape($params, $compiler) {
 
         $escaped = _smarty_modifiercompiler_escape_string($params[0], $esc_type, $char_set, $double_encode);
         if ($escaped !== null) {
-            return 'new Smarty_StringValue(' . $escaped . ', false)';
+            return 'new Smarty_StringValue(' . $escaped . ', \'' . $esc_type . '\')';
         }
     }
     catch (SmartyException $e) {

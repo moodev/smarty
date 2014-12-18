@@ -32,7 +32,7 @@ function smarty_modifier_escape($string, $esc_type = 'html', $char_set = null, $
         // Not escapeable, taint it.
         // This preserves compatibility with old implementation which defaults to no escaping when it doesn't
         // recognise the escaping mechanism (srsly, wtf?)
-        return new Smarty_StringValue($string, null);
+        return new Smarty_StringValue($string, false);
     }
     return new Smarty_StringValue($escaped, $esc_type);
 }

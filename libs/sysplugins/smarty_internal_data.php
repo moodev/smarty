@@ -514,7 +514,7 @@ class Smarty_StringValue
         }
         if ($value instanceof Smarty_StringValue) {
             $this->value = $value->value;
-            $escaped = $escaped ? : $value->escaped;
+            $escaped = $escaped === false ? null : $value->escaped;
         } else {
             $this->value = "".$value;
         }
