@@ -502,6 +502,41 @@ class Smarty_Data extends Smarty_Internal_Data
     }
 }
 
+class Smarty_StringValue
+{
+
+    public $value;
+    public $escaped = null;
+
+    public function __construct($value, $escaped = null) {
+        if ($value instanceof Smarty_Variable) {
+            $value = $value->value;
+        }
+        if ($value instanceof Smarty_StringValue) {
+            $this->value = $value->value;
+            $escaped = $escaped ? : $value->escaped;
+        } else {
+            $this->value = "".$value;
+        }
+        $this->escaped = $escaped;
+    }
+
+    public function taint()
+    {
+        $this->escaped = null;
+    }
+
+    public function tainted($context = null)
+    {
+        return $context == null ? $this->escaped == null : $this->escaped != $context;
+    }
+
+    public function __toString()
+    {
+        return (string) $this->value;
+    }
+}
+
 /**
  * class for the Smarty variable object
  * This class defines the Smarty variable object
@@ -511,12 +546,6 @@ class Smarty_Data extends Smarty_Internal_Data
  */
 class Smarty_Variable
 {
-    /**
-     * template variable
-     *
-     * @var mixed
-     */
-    public $value = null;
     /**
      * if true any output of this variable will be not cached
      *
@@ -529,6 +558,8 @@ class Smarty_Variable
      * @var int
      */
     public $scope = Smarty::SCOPE_LOCAL;
+
+    public $value;
 
     /**
      * create Smarty variable object
@@ -544,11 +575,6 @@ class Smarty_Variable
         $this->scope = $scope;
     }
 
-    /**
-     * <<magic>> String conversion
-     *
-     * @return string
-     */
     public function __toString()
     {
         return (string) $this->value;
